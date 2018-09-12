@@ -11,9 +11,10 @@ import (
 	// _操作(引入该包,不适用该包函数,只是只是调用init函数)
 	"fmt"
 	// "os"
-	"../util" // 一般不推荐这么做
 	"math"
+	"reflect"
 	"strconv"
+	"utils" // 一般不推荐这么做
 )
 
 // go get动态获取远程代码包,实际上是,1.git clone,2.go install
@@ -104,7 +105,7 @@ func main() {
 	v.User.name = "tom" // 嵌入字段修改
 	fmt.Println(v.User.name)
 	v.say() // 结构体会继承方法
-	util.GetMembers(v)
+	utils.GetMembers(v)
 
 	// 接口(interface)
 	var a interface{}
@@ -210,7 +211,10 @@ func main() {
 	// slice零值为nil,其长度和容量都为0
 	// 创建slice,1.从数组中构建slice
 	s := li[1:]
-	s2 := [...]string{"august", "tom", "jack"} // 省略长度,go会自动计算长度
+	s2 := [...]interface{}{11, "tom", "jack"} // 省略长度,go会自动计算长度,这个是arry,interface{}可以定义任意类型数据(int,string)
+	// s2 := []string{"august", "tom", "jack"} // 这个是slice,有...表示数组
+	fmt.Println(reflect.TypeOf(s2), reflect.ValueOf(s2).Kind(), "s2")
+	fmt.Println(reflect.TypeOf(s), reflect.ValueOf(s).Kind(), "s")
 	fmt.Print(s2)
 	// make和new都是用于分配内存,
 	// new只分配内存,返回指针
@@ -243,6 +247,9 @@ func main() {
 	fmt.Println(len(dict))    // 返回dict个数, 也可以对slice,list,string个数计算
 	fmt.Println(len(s2), len(str))
 	// 不能将其他类型当bool值使用
+	if val, ok := dict["age"]; ok {
+		fmt.Println(val, 11111111)
+	}
 	if exist {
 		fmt.Println(age)
 	}
